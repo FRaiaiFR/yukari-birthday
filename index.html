@@ -74,12 +74,16 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 60px;}
 .birthday-sub{font-family:var(--font-jp);font-size:14px;color:var(--gold-light);line-height:2;}
 @keyframes fadeInMsg{from{opacity:0;transform:scale(0.97);}to{opacity:1;transform:scale(1);}}
 #confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;}
+/* ===== 星キラキラ ===== */
+#star-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;}
+
 footer{text-align:center;padding:40px 20px;background:var(--dark);color:var(--light);font-family:var(--font-serif);font-style:italic;font-size:14px;letter-spacing:2px;}
 footer p{color:var(--gold);margin-top:8px;font-size:18px;}
 </style>
 </head>
 <body>
 <canvas id="confetti-canvas"></canvas>
+<canvas id="star-canvas"></canvas>
 <header>
   <div class="header-sub">Birthday Surprise Trip</div>
   <h1>yukari's <span>21st</span> Birthday</h1>
@@ -140,6 +144,8 @@ footer p{color:var(--gold);margin-top:8px;font-size:18px;}
     <div class="card"><div class="card-body"><div class="timeline">
       <div class="timeline-item"><div class="timeline-time">13:10</div><div class="timeline-content"><strong>横浜駅 集合</strong></div></div>
       <div class="timeline-item"><div class="timeline-time">15:00</div><div class="timeline-content"><strong>ホテル チェックイン</strong></div></div>
+      <!-- 13日0時までプレースホルダー -->
+      <div id="timeline-placeholder" class="timeline-item"><div class="timeline-time">その後…</div><div class="timeline-content" style="color:var(--gold);font-style:italic;">✦ 13日の0時のお楽しみ ✦</div></div>
       <!-- 13日0時まで非表示 -->
       <div id="timeline-hidden-before" class="hidden">
         <div class="timeline-item"><div class="timeline-time">午後</div><div class="timeline-content"><strong>部屋でまったり</strong></div></div>
@@ -151,6 +157,13 @@ footer p{color:var(--gold);margin-top:8px;font-size:18px;}
         <div class="timeline-item"><div class="timeline-time">深夜</div><div class="timeline-content"><strong>✨ お楽しみあり ✨</strong></div></div>
       </div>
     </div></div></div>
+  </div>
+
+  <!-- 14日プレースホルダー -->
+  <div class="section" id="sec-day14-placeholder">
+    <div class="section-label">Timeline</div>
+    <div class="section-title">6月14日（日）</div>
+    <div class="surprise-box"><p>✦ 13日の0時のお楽しみ ✦</p></div>
   </div>
 
   <!-- 14日タイムライン：13日0時まで非表示 -->
@@ -247,6 +260,68 @@ function animateConfetti(){
 
 function launchConfetti(){resizeCanvas();createParticles();animating=true;animateConfetti();}
 
+// ===== 星キラキラ =====
+const starCanvas = document.getElementById('star-canvas');
+const starCtx = starCanvas.getContext('2d');
+let stars = [], starAnimating = false;
+
+function resizeStarCanvas(){starCanvas.width=window.innerWidth;starCanvas.height=window.innerHeight;}
+window.addEventListener('resize',resizeStarCanvas);
+resizeStarCanvas();
+
+function createStars(){
+  stars=[];
+  for(let i=0;i<60;i++){
+    stars.push({
+      x:Math.random()*starCanvas.width,
+      y:-Math.random()*starCanvas.height*0.5,
+      vy:Math.random()*2+1,
+      size:Math.random()*10+5,
+      alpha:1,
+      twinkle:Math.random()*Math.PI*2,
+      twinkleSpeed:Math.random()*0.1+0.05,
+      color:Math.random()>0.5?'#ffd700':'#fff8dc'
+    });
+  }
+}
+
+function drawStar(ctx,x,y,size,color,alpha){
+  ctx.save();
+  ctx.globalAlpha=alpha;
+  ctx.fillStyle=color;
+  ctx.translate(x,y);
+  ctx.beginPath();
+  for(let i=0;i<5;i++){
+    const outerAngle=(i*4*Math.PI)/5-Math.PI/2;
+    const innerAngle=outerAngle+(2*Math.PI)/5;
+    ctx.lineTo(Math.cos(outerAngle)*size,Math.sin(outerAngle)*size);
+    ctx.lineTo(Math.cos(innerAngle)*size*0.4,Math.sin(innerAngle)*size*0.4);
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+function animateStars(){
+  if(!starAnimating)return;
+  starCtx.clearRect(0,0,starCanvas.width,starCanvas.height);
+  let alive=false;
+  stars.forEach(s=>{
+    if(s.alpha<=0)return;
+    alive=true;
+    s.y+=s.vy;
+    s.twinkle+=s.twinkleSpeed;
+    const tw=0.5+Math.sin(s.twinkle)*0.5;
+    if(s.y>starCanvas.height*0.75)s.alpha-=0.015;
+    drawStar(starCtx,s.x,s.y,s.size,s.color,Math.max(0,s.alpha*tw));
+  });
+  if(alive){requestAnimationFrame(animateStars);}
+  else{starAnimating=false;starCtx.clearRect(0,0,starCanvas.width,starCanvas.height);}
+}
+
+function launchStars(){resizeStarCanvas();createStars();starAnimating=true;animateStars();}
+
+
 // ===== メイン更新 =====
 function update(){
   const now=new Date();
@@ -267,7 +342,10 @@ function update(){
     document.getElementById('transit-before').classList.add('hidden');
     document.getElementById('transit-day13').classList.remove('hidden');
     document.getElementById('timeline-hidden-before').classList.remove('hidden');
+    document.getElementById('timeline-placeholder').classList.add('hidden');
     document.getElementById('sec-day14').classList.remove('hidden');
+    document.getElementById('sec-day14-placeholder').classList.add('hidden');
+    setTimeout(launchStars,400);
 
   } else {
     // 14日0時〜
@@ -277,7 +355,9 @@ function update(){
     document.getElementById('transit-day13').classList.add('hidden');
     document.getElementById('transit-full').classList.remove('hidden');
     document.getElementById('timeline-hidden-before').classList.remove('hidden');
+    document.getElementById('timeline-placeholder').classList.add('hidden');
     document.getElementById('sec-day14').classList.remove('hidden');
+    document.getElementById('sec-day14-placeholder').classList.add('hidden');
     document.getElementById('hotel-info-before').classList.add('hidden');
     document.getElementById('hotel-info-after').classList.remove('hidden');
     document.getElementById('hotel-stay-card').classList.add('hidden');
