@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>yukari's Birthday Trip 🎂</title>
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Birthday🎂">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#faf8f5;--warm:#f0ebe3;--gold:#c9a96e;--gold-light:#e8d5b0;--dark:#2a2520;--mid:#6b5f55;--light:#a89880;
+  --font-serif:'Cormorant Garamond','Georgia',serif;
+  --font-jp:'Noto Serif JP','Hiragino Mincho ProN','Yu Mincho',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--dark);font-family:var(--font-jp);font-weight:300;line-height:1.8;overflow-x:hidden;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-touch-callout:none;}
+header{background:var(--dark);color:var(--cream);text-align:center;padding:60px 20px 50px;position:relative;overflow:hidden;}
+header::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at center,#3d3028 0%,var(--dark) 70%);}
+header *{position:relative;z-index:1;}
+.header-sub{font-family:var(--font-serif);font-style:italic;font-size:14px;letter-spacing:4px;color:var(--gold);margin-bottom:16px;}
+header h1{font-family:var(--font-serif);font-size:38px;font-weight:300;color:var(--cream);margin-bottom:8px;}
+header h1 span{color:var(--gold);}
+.header-date{font-size:12px;letter-spacing:3px;color:var(--light);margin-top:12px;}
+.divider{display:flex;align-items:center;gap:12px;margin:16px auto;max-width:200px;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--gold);opacity:0.5;}
+.divider-diamond{width:6px;height:6px;background:var(--gold);transform:rotate(45deg);}
+main{max-width:680px;margin:0 auto;padding:32px 20px 130px;}
+.section{margin-bottom:48px;animation:fadeUp 0.6s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.section-label{font-family:var(--font-serif);font-style:italic;font-size:11px;letter-spacing:4px;color:var(--gold);margin-bottom:8px;}
+.section-title{font-size:20px;font-weight:400;color:var(--dark);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--gold-light);}
+.card{background:var(--warm);border:1px solid var(--gold-light);border-radius:2px;padding:20px 24px;margin-bottom:12px;}
+.card-title{font-family:var(--font-serif);font-style:italic;font-size:11px;letter-spacing:4px;color:var(--gold);margin-bottom:10px;}
+.card-body{font-size:14px;color:var(--mid);line-height:1.9;}
+.card-body strong{color:var(--dark);font-weight:400;}
+.timeline{position:relative;padding-left:28px;}
+.timeline::before{content:'';position:absolute;left:6px;top:8px;bottom:8px;width:1px;background:linear-gradient(to bottom,var(--gold),var(--gold-light),transparent);}
+.timeline-item{position:relative;margin-bottom:22px;}
+.timeline-item::before{content:'';position:absolute;left:-24px;top:8px;width:6px;height:6px;background:var(--gold);border-radius:50%;}
+.timeline-time{font-family:var(--font-serif);font-size:13px;color:var(--gold);letter-spacing:1px;margin-bottom:2px;}
+.timeline-content{font-size:14px;color:var(--mid);}
+.timeline-content strong{color:var(--dark);font-weight:400;}
+.train-box{background:white;border:1px solid var(--gold-light);border-radius:2px;padding:16px 20px;margin-bottom:12px;}
+.train-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #ede8e0;}
+.train-row:last-child{border-bottom:none;}
+.train-time{font-family:var(--font-serif);font-size:15px;color:var(--gold);min-width:52px;line-height:1.4;}
+.train-station{font-size:14px;color:var(--dark);font-weight:400;}
+.train-line{font-size:12px;color:var(--light);}
+.checklist{list-style:none;}
+.checklist li{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid #ede8e0;font-size:14px;color:var(--mid);cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent;}
+.checklist li:last-child{border-bottom:none;}
+.checklist li.done{color:var(--light);text-decoration:line-through;}
+.check-box{width:20px;height:20px;border:1.5px solid var(--gold);border-radius:3px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.checklist li.done .check-box{background:var(--gold);border-color:var(--gold);}
+.check-box::after{content:'✓';font-size:13px;color:white;opacity:0;transition:opacity 0.2s;}
+.checklist li.done .check-box::after{opacity:1;}
+.surprise-box{background:var(--warm);border:1px solid var(--gold);border-radius:2px;padding:24px;text-align:center;margin-bottom:12px;}
+.surprise-box p{font-family:var(--font-serif);font-style:italic;font-size:16px;color:var(--gold);letter-spacing:2px;}
+.hidden{display:none;}
+.message-box{border-radius:2px;padding:32px;text-align:center;margin-bottom:12px;position:relative;overflow:hidden;}
+.msg-mosaic{background:var(--dark);}
+.msg-blur{filter:blur(8px);user-select:none;pointer-events:none;}
+.msg-text{font-family:var(--font-serif);font-style:italic;font-size:18px;color:var(--gold-light);line-height:2;}
+.mosaic-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(20,15,12,0.85);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;}
+.mosaic-label{font-family:var(--font-serif);font-style:italic;font-size:15px;color:var(--gold);letter-spacing:2px;animation:pulse 2s ease-in-out infinite;}
+.mosaic-sub{font-size:11px;color:var(--light);letter-spacing:3px;}
+@keyframes pulse{0%,100%{opacity:0.6;}50%{opacity:1;}}
+.msg-day13{background:var(--dark);animation:fadeInMsg 1.2s ease both;}
+.hint-next{font-size:11px;letter-spacing:3px;color:var(--light);margin-top:16px;animation:pulse 2s ease-in-out infinite;}
+.msg-day14{background:linear-gradient(135deg,#2a2520 0%,#3d2a1a 100%);animation:fadeInMsg 1.2s ease both;}
+.birthday-title{font-family:var(--font-serif);font-size:22px;color:var(--gold);letter-spacing:3px;line-height:1.6;margin-bottom:12px;}
+.birthday-sub{font-family:var(--font-jp);font-size:14px;color:var(--gold-light);line-height:2;}
+@keyframes fadeInMsg{from{opacity:0;transform:scale(0.97);}to{opacity:1;transform:scale(1);}}
+#confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;}
+
+/* ===== デモバー ===== */
+.demo-bar{position:fixed;bottom:0;left:0;right:0;background:#1a1410;border-top:1px solid var(--gold);padding:10px 12px;z-index:9998;display:flex;align-items:center;gap:6px;justify-content:center;flex-wrap:wrap;}
+.demo-label{font-size:10px;letter-spacing:2px;color:var(--light);width:100%;text-align:center;margin-bottom:2px;}
+.demo-btn{font-size:11px;padding:7px 10px;border:1px solid var(--gold);background:transparent;color:var(--gold);cursor:pointer;transition:all 0.2s;border-radius:1px;-webkit-user-select:none;user-select:none;}
+.demo-btn:active,.demo-btn.active{background:var(--gold);color:var(--dark);}
+/* ===== 星キラキラ ===== */
+#star-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;}
+
+footer{text-align:center;padding:40px 20px;background:var(--dark);color:var(--light);font-family:var(--font-serif);font-style:italic;font-size:14px;letter-spacing:2px;}
+footer p{color:var(--gold);margin-top:8px;font-size:18px;}
+</style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+<canvas id="star-canvas"></canvas>
+<header>
+  <div class="header-sub">Birthday Surprise Trip</div>
+  <h1>yukari's <span>21st</span> Birthday</h1>
+  <div class="divider"><div class="divider-diamond"></div></div>
+  <div class="header-date">June 13 – 14, 2026</div>
+</header>
+<main>
+
+  <!-- はじめに -->
+  <div class="section" id="sec-msg">
+    <div class="section-label">Message</div>
+    <div class="section-title">はじめに</div>
+    <div id="message-box" class="message-box"></div>
+  </div>
+
+  <!-- 集合・移動 -->
+  <div class="section" id="sec-transit">
+    <div class="section-label">Transit</div>
+    <div class="section-title">集合・移動</div>
+    <!-- 初期：金沢文庫・横浜のみ -->
+    <div id="transit-before" class="train-box">
+      <div class="train-row"><div class="train-time">12:54</div><div><div class="train-station">金沢文庫 発</div><div class="train-line">京急本線特急</div></div></div>
+      <div class="train-row"><div class="train-time">13:10</div><div><div class="train-station">横浜駅 集合 🚃</div><div class="train-line">目的地は当日のお楽しみ</div></div></div>
+    </div>
+    <!-- 13日0時〜：東京まで表示 -->
+    <div id="transit-day13" class="train-box hidden">
+      <div class="train-row"><div class="train-time">12:54</div><div><div class="train-station">金沢文庫 発</div><div class="train-line">京急本線特急 青砥行 ／ 3・4番線</div></div></div>
+      <div class="train-row"><div class="train-time">13:10着<br>13:22発</div><div><div class="train-station">横浜 集合 🚃</div><div class="train-line">JR東海道本線（上野東京ライン）小金井行 ／ 7番線</div></div></div>
+      <div class="train-row"><div class="train-time">13:48</div><div><div class="train-station">東京 着</div><div class="train-line">この先は当日のお楽しみ ✨</div></div></div>
+    </div>
+    <!-- 19時〜：海浜幕張まで全表示 -->
+    <div id="transit-full" class="train-box hidden">
+      <div class="train-row"><div class="train-time">12:54</div><div><div class="train-station">金沢文庫 発</div><div class="train-line">京急本線特急 青砥行 ／ 3・4番線</div></div></div>
+      <div class="train-row"><div class="train-time">13:10着<br>13:22発</div><div><div class="train-station">横浜 集合 🚃</div><div class="train-line">JR東海道本線（上野東京ライン）小金井行 ／ 7番線</div></div></div>
+      <div class="train-row"><div class="train-time">13:48着<br>14:04発</div><div><div class="train-station">東京</div><div class="train-line">JR京葉線快速 上総一ノ宮行 ／ 京葉2番線</div></div></div>
+      <div class="train-row"><div class="train-time">14:33</div><div><div class="train-station">海浜幕張 着 🏨</div><div class="train-line">所要時間 約1時間39分</div></div></div>
+    </div>
+    <div class="card"><div class="card-body" style="font-size:13px;">※早めに集合することになったらお出かけしながら向かおうね🛍</div></div>
+  </div>
+
+  <!-- 今回の旅行 -->
+  <div class="section" id="sec-overview">
+    <div class="section-label">Overview</div>
+    <div class="section-title">今回の旅行</div>
+    <div id="hotel-info-before" class="surprise-box"><p style="animation:pulse 2s ease-in-out infinite;">🗺 行き先は当日のお楽しみ ✨</p></div>
+    <div id="hotel-info-after" class="hidden">
+      <div class="card"><div class="card-title">Hotel</div><div class="card-body"><strong>ホテル ザ・マンハッタン</strong><br>千葉・海浜幕張 🏨<br>チェックイン：6月13日（土）15:00<br>チェックアウト：6月14日（日）12:00</div></div>
+    </div>
+    <div class="card" id="hotel-stay-card"><div class="card-title">Stay</div><div class="card-body">ホテルに1泊🏨<br>チェックイン：6月13日（土）15:00<br>チェックアウト：6月14日（日）12:00</div></div>
+    <div id="dinner-before" class="card"><div class="card-title">Dinner</div><div class="card-body" style="text-align:center;"><span style="font-family:var(--font-serif);font-style:italic;color:var(--gold);font-size:15px;animation:pulse 2s ease-in-out infinite;">✦ 19:00 のお楽しみ ✦</span></div></div>
+    <div id="dinner-after" class="card hidden"><div class="card-title">Dinner</div><div class="card-body"><strong>のどか 海浜幕張店</strong><br>和食・海鮮コース🍶 ／ 2時間飲み放題<br>6月13日（土）19:45〜</div></div>
+  </div>
+
+  <!-- 13日タイムライン -->
+  <div class="section" id="sec-day13">
+    <div class="section-label">Timeline</div>
+    <div class="section-title">6月13日（土）の流れ</div>
+    <div class="card"><div class="card-body"><div class="timeline">
+      <div class="timeline-item"><div class="timeline-time">13:10</div><div class="timeline-content"><strong>横浜駅 集合</strong></div></div>
+      <div class="timeline-item"><div class="timeline-time">15:00</div><div class="timeline-content"><strong>ホテル チェックイン</strong></div></div>
+      <!-- 13日0時までプレースホルダー -->
+      <div id="timeline-placeholder" class="timeline-item"><div class="timeline-time">その後…</div><div class="timeline-content" style="color:var(--gold);font-style:italic;animation:pulse 2s ease-in-out infinite;">✦ 13日の0時のお楽しみ ✦</div></div>
+      <!-- 13日0時まで非表示 -->
+      <div id="timeline-hidden-before" class="hidden">
+        <div class="timeline-item"><div class="timeline-time">午後</div><div class="timeline-content"><strong>部屋でまったり</strong></div></div>
+        <div class="timeline-item">
+          <div class="timeline-time">19:45</div>
+          <div class="timeline-content" id="dinner-timeline-before"><strong>夕食 🍶</strong>（✦ お楽しみ ✦）</div>
+          <div class="timeline-content hidden" id="dinner-timeline-after"><strong>夕食 🍶</strong>（のどか 海浜幕張店・海鮮コース・飲み放題）</div>
+        </div>
+        <div class="timeline-item"><div class="timeline-time">深夜</div><div class="timeline-content"><strong>✨ お楽しみあり ✨</strong></div></div>
+      </div>
+    </div></div></div>
+  </div>
+
+  <!-- 14日プレースホルダー -->
+  <div class="section" id="sec-day14-placeholder">
+    <div class="section-label">Timeline</div>
+    <div class="section-title">6月14日（日）</div>
+    <div class="surprise-box"><p style="animation:pulse 2s ease-in-out infinite;">✦ 13日の0時のお楽しみ ✦</p></div>
+  </div>
+
+  <!-- 14日タイムライン：13日0時まで非表示 -->
+  <div class="section hidden" id="sec-day14">
+    <div class="section-label">Timeline</div>
+    <div class="section-title">6月14日（日）</div>
+    <div class="card"><div class="card-body"><div class="timeline">
+      <div class="timeline-item"><div class="timeline-time">朝</div><div class="timeline-content">朝食 ／ ゆっくり過ごす ☀️</div></div>
+      <div class="timeline-item"><div class="timeline-time">12:00</div><div class="timeline-content"><strong>チェックアウト</strong></div></div>
+      <div class="timeline-item">
+        <div class="timeline-time">12:00〜</div>
+        <div class="timeline-content" id="day14-detail-before">観光・ランチ 🚶</div>
+        <div class="timeline-content hidden" id="day14-detail-after">幕張・稲毛海浜公園周辺を観光・ランチ 🚶</div>
+      </div>
+    </div></div></div>
+  </div>
+
+  <!-- 持ち物チェックリスト -->
+  <div class="section" id="sec-prep">
+    <div class="section-label">Preparation</div>
+    <div class="section-title">持ち物チェックリスト</div>
+    <div class="card">
+      <ul class="checklist" id="checklist">
+        <li onclick="toggleCheck(this,0)"><div class="check-box"></div><span>13日の服・14日の服</span></li>
+        <li onclick="toggleCheck(this,1)"><div class="check-box"></div><span>予備服</span></li>
+        <li onclick="toggleCheck(this,2)"><div class="check-box"></div><span>サンダル（あれば）</span></li>
+        <li onclick="toggleCheck(this,3)"><div class="check-box"></div><span>洗面用具・スキンケア</span></li>
+        <li onclick="toggleCheck(this,4)"><div class="check-box"></div><span>日焼け止め</span></li>
+        <li onclick="toggleCheck(this,5)"><div class="check-box"></div><span>エコバッグ</span></li>
+        <li onclick="toggleCheck(this,6)"><div class="check-box"></div><span>モバイルバッテリー</span></li>
+      </ul>
+    </div>
+    <div class="card"><div class="card-body" style="font-size:13px;color:var(--mid);">良かったらチェックリスト使ってね ✓</div></div>
+    <div class="card"><div class="card-body" style="font-size:13px;color:var(--gold);">たくさん写真を撮りたいから、お気に入りのコーデで来てね 📸</div></div>
+  </div>
+
+</main>
+
+<div class="demo-bar">
+  <div class="demo-label">🔧 DEMO — タップして確認</div>
+  <button class="demo-btn active" id="btn0" onclick="showState(0)">① 初期状態</button>
+  <button class="demo-btn" id="btn1" onclick="showState(1)">② 13日 0時〜⭐</button>
+  <button class="demo-btn" id="btn2" onclick="showState(2)">③ 19:00〜</button>
+  <button class="demo-btn" id="btn3" onclick="showState(3)">④ 14日 0時〜🎉</button>
+</div>
+<footer>Happy 21st Birthday, yukari<p>🎂 June 14, 2026</p></footer>
+
+<script>
+// ===== チェックリスト（localStorage保存） =====
+function toggleCheck(li, idx) {
+  li.classList.toggle('done');
+  const checks = JSON.parse(localStorage.getItem('checks') || '{}');
+  checks[idx] = li.classList.contains('done');
+  localStorage.setItem('checks', JSON.stringify(checks));
+}
+
+function loadChecks() {
+  try {
+    const checks = JSON.parse(localStorage.getItem('checks') || '{}');
+    const items = document.querySelectorAll('#checklist li');
+    items.forEach((li, idx) => {
+      if (checks[idx]) li.classList.add('done');
+    });
+  } catch(e) {}
+}
+
+// ===== クラッカー =====
+const canvas = document.getElementById('confetti-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [], animating = false;
+
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+window.addEventListener('resize',resizeCanvas);
+resizeCanvas();
+
+function createParticles(){
+  particles=[];
+  const colors=['#c9a96e','#e8d5b0','#ffffff','#f0ebe3','#ffd700','#ffaaaa','#ffccaa','#aaddff'];
+  for(let s=0;s<2;s++){
+    for(let i=0;i<80;i++){
+      particles.push({x:s===0?0:canvas.width,y:canvas.height*0.4,vx:s===0?(Math.random()*12+4):-(Math.random()*12+4),vy:-(Math.random()*14+4),color:colors[Math.floor(Math.random()*colors.length)],size:Math.random()*8+4,gravity:0.4,alpha:1,rotation:Math.random()*360,rotSpeed:(Math.random()-0.5)*8,shape:Math.random()>0.5?'rect':'circle'});
+    }
+  }
+}
+
+function animateConfetti(){
+  if(!animating)return;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  let alive=false;
+  particles.forEach(p=>{
+    if(p.alpha<=0)return;
+    alive=true;
+    p.x+=p.vx;p.y+=p.vy;p.vy+=p.gravity;p.vx*=0.99;p.rotation+=p.rotSpeed;
+    if(p.y>canvas.height*0.7)p.alpha-=0.018;
+    ctx.save();ctx.globalAlpha=Math.max(0,p.alpha);ctx.translate(p.x,p.y);ctx.rotate(p.rotation*Math.PI/180);ctx.fillStyle=p.color;
+    if(p.shape==='rect'){ctx.fillRect(-p.size/2,-p.size/4,p.size,p.size/2);}
+    else{ctx.beginPath();ctx.arc(0,0,p.size/2,0,Math.PI*2);ctx.fill();}
+    ctx.restore();
+  });
+  if(alive){requestAnimationFrame(animateConfetti);}
+  else{animating=false;ctx.clearRect(0,0,canvas.width,canvas.height);}
+}
+
+function launchConfetti(){resizeCanvas();createParticles();animating=true;animateConfetti();}
+
+// ===== 星キラキラ =====
+const starCanvas = document.getElementById('star-canvas');
+const starCtx = starCanvas.getContext('2d');
+let stars = [], starAnimating = false;
+
+function resizeStarCanvas(){starCanvas.width=window.innerWidth;starCanvas.height=window.innerHeight;}
+window.addEventListener('resize',resizeStarCanvas);
+resizeStarCanvas();
+
+function createStars(){
+  stars=[];
+  for(let i=0;i<60;i++){
+    stars.push({
+      x:Math.random()*starCanvas.width,
+      y:-Math.random()*starCanvas.height*0.5,
+      vy:Math.random()*2+1,
+      size:Math.random()*10+5,
+      alpha:1,
+      twinkle:Math.random()*Math.PI*2,
+      twinkleSpeed:Math.random()*0.1+0.05,
+      color:Math.random()>0.5?'#ffd700':'#fff8dc'
+    });
+  }
+}
+
+function drawStar(ctx,x,y,size,color,alpha){
+  ctx.save();
+  ctx.globalAlpha=alpha;
+  ctx.fillStyle=color;
+  ctx.translate(x,y);
+  ctx.beginPath();
+  for(let i=0;i<5;i++){
+    const outerAngle=(i*4*Math.PI)/5-Math.PI/2;
+    const innerAngle=outerAngle+(2*Math.PI)/5;
+    ctx.lineTo(Math.cos(outerAngle)*size,Math.sin(outerAngle)*size);
+    ctx.lineTo(Math.cos(innerAngle)*size*0.4,Math.sin(innerAngle)*size*0.4);
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+function animateStars(){
+  if(!starAnimating)return;
+  starCtx.clearRect(0,0,starCanvas.width,starCanvas.height);
+  let alive=false;
+  stars.forEach(s=>{
+    if(s.alpha<=0)return;
+    alive=true;
+    s.y+=s.vy;
+    s.twinkle+=s.twinkleSpeed;
+    const tw=0.5+Math.sin(s.twinkle)*0.5;
+    if(s.y>starCanvas.height*0.75)s.alpha-=0.015;
+    drawStar(starCtx,s.x,s.y,s.size,s.color,Math.max(0,s.alpha*tw));
+  });
+  if(alive){requestAnimationFrame(animateStars);}
+  else{starAnimating=false;starCtx.clearRect(0,0,starCanvas.width,starCanvas.height);}
+}
+
+function launchStars(){resizeStarCanvas();createStars();starAnimating=true;animateStars();}
+
+
+// ===== メイン更新 =====
+function update(){
+  const now=new Date();
+  const day13=new Date('2026-06-13T00:00:00');
+  const day13dinner=new Date('2026-06-13T19:00:00');
+  const day14=new Date('2026-06-14T00:00:00');
+  const box=document.getElementById('message-box');
+
+  if(now<day13){
+    // モザイク状態
+    box.className='message-box msg-mosaic';
+    box.innerHTML=`<div class="msg-blur msg-text"><p>今日は待ちに待った21歳誕生日ホカンスDay<br>1泊2日楽しもうね</p></div><div class="mosaic-overlay"><div class="mosaic-label">✦ 13日の0時に変わる予感… ✦</div><div class="mosaic-sub">June 13, 00:00</div></div>`;
+
+  } else if(now>=day13&&now<day14){
+    // 13日0時〜：メッセージ・電車（東京まで）・タイムライン下半分・14日セクション表示
+    box.className='message-box msg-day13';
+    box.innerHTML=`<div class="msg-text"><p>今日は待ちに待った<br>21歳誕生日ホカンス<em style="font-size:22px;color:var(--gold);">Day</em><br>1泊2日楽しもうね🎉</p></div><div class="hint-next">✦ 14日の0時にも変わる予感… ✦</div>`;
+    document.getElementById('transit-before').classList.add('hidden');
+    document.getElementById('transit-day13').classList.remove('hidden');
+    document.getElementById('timeline-hidden-before').classList.remove('hidden');
+    document.getElementById('timeline-placeholder').classList.add('hidden');
+    document.getElementById('sec-day14').classList.remove('hidden');
+    document.getElementById('sec-day14-placeholder').classList.add('hidden');
+    setTimeout(launchStars,400);
+
+  } else {
+    // 14日0時〜
+    box.className='message-box msg-day14';
+    box.innerHTML=`<div class="birthday-title">❤︎ Happy 21st Birthday ❤︎</div><div class="birthday-sub">21歳のお誕生日おめでとう🎉<br>ゆかりちゃんの大切な日をお祝いさせてくれてありがと<br>これからも沢山の思い出作っていこうね</div>`;
+    document.getElementById('transit-before').classList.add('hidden');
+    document.getElementById('transit-day13').classList.add('hidden');
+    document.getElementById('transit-full').classList.remove('hidden');
+    document.getElementById('timeline-hidden-before').classList.remove('hidden');
+    document.getElementById('timeline-placeholder').classList.add('hidden');
+    document.getElementById('sec-day14').classList.remove('hidden');
+    document.getElementById('sec-day14-placeholder').classList.add('hidden');
+    document.getElementById('hotel-info-before').classList.add('hidden');
+    document.getElementById('hotel-info-after').classList.remove('hidden');
+    document.getElementById('hotel-stay-card').classList.add('hidden');
+    document.getElementById('day14-detail-before').classList.add('hidden');
+    document.getElementById('day14-detail-after').classList.remove('hidden');
+    setTimeout(launchConfetti,400);
+  }
+
+  // 19時〜：ディナー・電車フル表示・ホテル名表示
+  if(now>=day13dinner){
+    document.getElementById('transit-before').classList.add('hidden');
+    document.getElementById('transit-day13').classList.add('hidden');
+    document.getElementById('transit-full').classList.remove('hidden');
+    document.getElementById('hotel-info-before').classList.add('hidden');
+    document.getElementById('hotel-info-after').classList.remove('hidden');
+    document.getElementById('hotel-stay-card').classList.add('hidden');
+    document.getElementById('dinner-before').classList.add('hidden');
+    document.getElementById('dinner-after').classList.remove('hidden');
+    document.getElementById('dinner-timeline-before').classList.add('hidden');
+    document.getElementById('dinner-timeline-after').classList.remove('hidden');
+  }
+}
+
+loadChecks();
+update();
+setInterval(update,30000);
+
+// ===== デモ用 =====
+function showState(state){
+  document.querySelectorAll('.demo-btn').forEach((b,i)=>b.classList.toggle('active',i===state));
+  const box=document.getElementById('message-box');
+  const show=id=>{const e=document.getElementById(id);if(e)e.classList.remove('hidden');};
+  const hide=id=>{const e=document.getElementById(id);if(e)e.classList.add('hidden');};
+
+  // リセット
+  show('transit-before');hide('transit-day13');hide('transit-full');
+  show('hotel-info-before');hide('hotel-info-after');show('hotel-stay-card');
+  show('dinner-before');hide('dinner-after');
+  hide('timeline-hidden-before');show('timeline-placeholder');
+  hide('sec-day14');show('sec-day14-placeholder');
+  show('dinner-timeline-before');hide('dinner-timeline-after');
+  show('day14-detail-before');hide('day14-detail-after');
+
+  if(state===0){
+    box.className='message-box msg-mosaic';
+    box.innerHTML=`<div class="msg-blur msg-text"><p>今日は待ちに待った21歳誕生日ホカンスDay<br>1泊2日楽しもうね</p></div><div class="mosaic-overlay"><div class="mosaic-label">✦ 13日の0時に変わる予感… ✦</div><div class="mosaic-sub">June 13, 00:00</div></div>`;
+  } else if(state===1){
+    box.className='message-box msg-day13';
+    box.innerHTML=`<div class="msg-text"><p>今日は待ちに待った<br>21歳誕生日ホカンス<em style="font-size:22px;color:var(--gold);">Day</em><br>1泊2日楽しもうね🎉</p></div><div class="hint-next">✦ 14日の0時にも変わる予感… ✦</div>`;
+    hide('transit-before');show('transit-day13');
+    show('timeline-hidden-before');hide('timeline-placeholder');
+    show('sec-day14');hide('sec-day14-placeholder');
+    setTimeout(launchStars,300);
+  } else if(state===2){
+    box.className='message-box msg-day13';
+    box.innerHTML=`<div class="msg-text"><p>今日は待ちに待った<br>21歳誕生日ホカンス<em style="font-size:22px;color:var(--gold);">Day</em><br>1泊2日楽しもうね🎉</p></div><div class="hint-next">✦ 14日の0時にも変わる予感… ✦</div>`;
+    hide('transit-before');hide('transit-day13');show('transit-full');
+    hide('hotel-info-before');show('hotel-info-after');hide('hotel-stay-card');
+    hide('dinner-before');show('dinner-after');
+    show('timeline-hidden-before');hide('timeline-placeholder');
+    show('sec-day14');hide('sec-day14-placeholder');
+    hide('dinner-timeline-before');show('dinner-timeline-after');
+  } else {
+    box.className='message-box msg-day14';
+    box.innerHTML=`<div class="birthday-title">❤︎ Happy 21st Birthday ❤︎</div><div class="birthday-sub">21歳のお誕生日おめでとう🎉<br>ゆかりちゃんの大切な日をお祝いさせてくれてありがと<br>これからも沢山の思い出作っていこうね</div>`;
+    hide('transit-before');hide('transit-day13');show('transit-full');
+    hide('hotel-info-before');show('hotel-info-after');hide('hotel-stay-card');
+    hide('dinner-before');show('dinner-after');
+    show('timeline-hidden-before');hide('timeline-placeholder');
+    show('sec-day14');hide('sec-day14-placeholder');
+    hide('dinner-timeline-before');show('dinner-timeline-after');
+    hide('day14-detail-before');show('day14-detail-after');
+    setTimeout(launchConfetti,400);
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+showState(0);
+
+</script>
+</body>
+</html>
