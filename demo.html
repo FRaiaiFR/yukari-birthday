@@ -15,7 +15,14 @@
   --font-jp:'Noto Serif JP','Hiragino Mincho ProN','Yu Mincho',serif;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--cream);color:var(--dark);font-family:var(--font-jp);font-weight:300;line-height:1.8;overflow-x:hidden;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-touch-callout:none;}
+html{overscroll-behavior:none;}
+body{background:var(--cream);color:var(--dark);font-family:var(--font-jp);font-weight:300;line-height:1.8;overflow-x:hidden;overscroll-behavior-y:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-touch-callout:none;}
+/* モバイルバッテリー警告 */
+.batt-warn{display:inline-block;margin-left:8px;font-size:12px;color:#c97a5a;opacity:0;transform:translateX(-8px);transition:all 0.4s ease;white-space:nowrap;}
+.checklist li.done .batt-warn{opacity:1;transform:translateX(0);}
+/* 1文字ずつ表示 */
+.char{opacity:0;display:inline-block;animation:charIn 0.4s ease forwards;}
+@keyframes charIn{from{opacity:0;filter:blur(4px);}to{opacity:1;filter:blur(0);}}
 header{background:var(--dark);color:var(--cream);text-align:center;padding:60px 20px 50px;position:relative;overflow:hidden;}
 header::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at center,#3d3028 0%,var(--dark) 70%);}
 header *{position:relative;z-index:1;}
@@ -74,6 +81,7 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 130px;}
 .birthday-sub{font-family:var(--font-jp);font-size:14px;color:var(--gold-light);line-height:2;}
 @keyframes fadeInMsg{from{opacity:0;transform:scale(0.97);}to{opacity:1;transform:scale(1);}}
 #confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;}
+
 
 /* ===== デモバー ===== */
 .demo-bar{position:fixed;bottom:0;left:0;right:0;background:#1a1410;border-top:1px solid var(--gold);padding:10px 12px;z-index:9998;display:flex;align-items:center;gap:6px;justify-content:center;flex-wrap:wrap;}
@@ -199,7 +207,7 @@ footer p{color:var(--gold);margin-top:8px;font-size:18px;}
         <li onclick="toggleCheck(this,3)"><div class="check-box"></div><span>洗面用具・スキンケア</span></li>
         <li onclick="toggleCheck(this,4)"><div class="check-box"></div><span>日焼け止め</span></li>
         <li onclick="toggleCheck(this,5)"><div class="check-box"></div><span>エコバッグ</span></li>
-        <li onclick="toggleCheck(this,6)"><div class="check-box"></div><span>モバイルバッテリー</span></li>
+        <li onclick="toggleCheck(this,6)"><div class="check-box"></div><span>モバイルバッテリー</span><span class="batt-warn" id="batt-warn">⚠️ 充電忘れないようにね</span></li>
       </ul>
     </div>
     <div class="card"><div class="card-body" style="font-size:13px;color:var(--mid);">良かったらチェックリスト使ってね ✓</div></div>
@@ -210,18 +218,23 @@ footer p{color:var(--gold);margin-top:8px;font-size:18px;}
 
 <div class="demo-bar">
   <div class="demo-label">🔧 DEMO — タップして確認</div>
-  <button class="demo-btn active" id="btn0" onclick="showState(0)">① 初期状態</button>
-  <button class="demo-btn" id="btn1" onclick="showState(1)">② 13日 0時〜⭐</button>
-  <button class="demo-btn" id="btn2" onclick="showState(2)">③ 19:00〜</button>
-  <button class="demo-btn" id="btn3" onclick="showState(3)">④ 14日 0時〜🎉</button>
+  <button class="demo-btn active" id="btn0" onclick="showState(0)">① 初期</button>
+  <button class="demo-btn" id="btn1" onclick="showState(1)">② 13日0時⭐</button>
+  <button class="demo-btn" id="btn2" onclick="showState(2)">③ 15:00</button>
+  <button class="demo-btn" id="btn3" onclick="showState(3)">④ 19:00</button>
+  <button class="demo-btn" id="btn4" onclick="showState(4)">⑤ 14日0時🎉</button>
 </div>
-<footer>Happy 21st Birthday, yukari<p>🎂 June 14, 2026</p></footer>
+<footer>
+  <div style="font-family:var(--font-serif);font-style:italic;font-size:13px;letter-spacing:2px;color:var(--light);margin-bottom:20px;line-height:2;">Thank you for being you.<br>素敵な2日間になりますように。</div>
+  <div class="divider" style="max-width:160px;"><div class="divider-diamond"></div></div>
+  Happy 21st Birthday, yukari
+  <p>🎂 June 14, 2026</p>
+</footer>
 
 <script>
 // ===== チェックリスト（localStorage保存） =====
 function toggleCheck(li, idx) {
-  li.classList.toggle('done');
-  const checks = JSON.parse(localStorage.getItem('checks') || '{}');
+  li.classList.toggle('done');  const checks = JSON.parse(localStorage.getItem('checks') || '{}');
   checks[idx] = li.classList.contains('done');
   localStorage.setItem('checks', JSON.stringify(checks));
 }
@@ -260,5 +273,249 @@ function animateConfetti(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   let alive=false;
   particles.forEach(p=>{
+    if(p.alpha<=0)return;
+    alive=true;
+    p.x+=p.vx;p.y+=p.vy;p.vy+=p.gravity;p.vx*=0.99;p.rotation+=p.rotSpeed;
+    if(p.y>canvas.height*0.7)p.alpha-=0.018;
+    ctx.save();ctx.globalAlpha=Math.max(0,p.alpha);ctx.translate(p.x,p.y);ctx.rotate(p.rotation*Math.PI/180);ctx.fillStyle=p.color;
+    if(p.shape==='rect'){ctx.fillRect(-p.size/2,-p.size/4,p.size,p.size/2);}
+    else{ctx.beginPath();ctx.arc(0,0,p.size/2,0,Math.PI*2);ctx.fill();}
+    ctx.restore();
+  });
+  if(alive){requestAnimationFrame(animateConfetti);}
+  else{animating=false;ctx.clearRect(0,0,canvas.width,canvas.height);}
+}
+
+function launchConfetti(){resizeCanvas();createParticles();animating=true;animateConfetti();}
+
+// ===== 星キラキラ =====
+const starCanvas = document.getElementById('star-canvas');
+const starCtx = starCanvas.getContext('2d');
+let stars = [], starAnimating = false;
+
+function resizeStarCanvas(){starCanvas.width=window.innerWidth;starCanvas.height=window.innerHeight;}
+window.addEventListener('resize',resizeStarCanvas);
+resizeStarCanvas();
+
+function createStars(){
+  stars=[];
+  for(let i=0;i<60;i++){
+    stars.push({
+      x:Math.random()*starCanvas.width,
+      y:-Math.random()*starCanvas.height*0.5,
+      vy:Math.random()*2+1,
+      size:Math.random()*10+5,
+      alpha:1,
+      twinkle:Math.random()*Math.PI*2,
+      twinkleSpeed:Math.random()*0.1+0.05,
+      color:Math.random()>0.5?'#ffd700':'#fff8dc'
+    });
+  }
+}
+
+function drawStar(ctx,x,y,size,color,alpha){
+  ctx.save();
+  ctx.globalAlpha=alpha;
+  ctx.fillStyle=color;
+  ctx.translate(x,y);
+  ctx.beginPath();
+  for(let i=0;i<5;i++){
+    const outerAngle=(i*4*Math.PI)/5-Math.PI/2;
+    const innerAngle=outerAngle+(2*Math.PI)/5;
+    ctx.lineTo(Math.cos(outerAngle)*size,Math.sin(outerAngle)*size);
+    ctx.lineTo(Math.cos(innerAngle)*size*0.4,Math.sin(innerAngle)*size*0.4);
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+function animateStars(){
+  if(!starAnimating)return;
+  starCtx.clearRect(0,0,starCanvas.width,starCanvas.height);
+  let alive=false;
+  stars.forEach(s=>{
+    if(s.alpha<=0)return;
+    alive=true;
+    s.y+=s.vy;
+    s.twinkle+=s.twinkleSpeed;
+    const tw=0.5+Math.sin(s.twinkle)*0.5;
+    if(s.y>starCanvas.height*0.75)s.alpha-=0.015;
+    drawStar(starCtx,s.x,s.y,s.size,s.color,Math.max(0,s.alpha*tw));
+  });
+  if(alive){requestAnimationFrame(animateStars);}
+  else{starAnimating=false;starCtx.clearRect(0,0,starCanvas.width,starCanvas.height);}
+}
+
+function launchStars(){resizeStarCanvas();createStars();starAnimating=true;animateStars();}
 
 
+// ===== 1文字ずつ表示 =====
+let lastTyped = '';
+function typeMessage(targetId, text){
+  // 同じテキストを既にタイプ済みならスキップ（30秒ごとのupdateで再生され続けるのを防ぐ）
+  if(lastTyped===text){
+    const el=document.getElementById(targetId);
+    if(el){
+      el.innerHTML='';
+      const chars=[...text];
+      chars.forEach(ch=>{
+        if(ch==='\n'){el.appendChild(document.createElement('br'));}
+        else{const s=document.createElement('span');s.textContent=ch;el.appendChild(s);}
+      });
+    }
+    return;
+  }
+  lastTyped=text;
+  const el=document.getElementById(targetId);
+  if(!el)return;
+  el.innerHTML='';
+  const chars=[...text];
+  chars.forEach((ch,i)=>{
+    if(ch==='\n'){el.appendChild(document.createElement('br'));return;}
+    const s=document.createElement('span');
+    s.className='char';
+    s.textContent=ch;
+    s.style.animationDelay=(i*0.06)+'s';
+    el.appendChild(s);
+  });
+}
+
+// ===== メイン更新 =====
+function update(){
+  const now=new Date();
+  const day13=new Date('2026-06-13T00:00:00');
+  const day13dinner=new Date('2026-06-13T19:00:00');
+  const day14=new Date('2026-06-14T00:00:00');
+  const box=document.getElementById('message-box');
+
+  if(now<day13){
+    // モザイク状態
+    box.className='message-box msg-mosaic';
+    box.innerHTML=`<div class="msg-blur msg-text"><p>今日は待ちに待った21歳誕生日ホカンスDay<br>1泊2日楽しもうね</p></div><div class="mosaic-overlay"><div class="mosaic-label">✦ 13日の0時に変わる予感… ✦</div><div class="mosaic-sub">June 13, 00:00</div></div>`;
+
+  } else if(now>=day13&&now<day14){
+    // 13日0時〜：メッセージ・電車（東京まで）・タイムライン下半分・14日セクション表示
+    box.className='message-box msg-day13';
+    box.innerHTML=`<div class="msg-text"><p id="typing-target"></p></div><div class="hint-next">✦ 14日の0時にも変わる予感… ✦</div>`;
+    typeMessage('typing-target','今日は待ちに待った\n21歳誕生日ホカンスDay\n1泊2日楽しもうね🎉');
+    document.getElementById('transit-before').classList.add('hidden');
+    document.getElementById('transit-day13').classList.remove('hidden');
+    document.getElementById('timeline-hidden-before').classList.remove('hidden');
+    document.getElementById('timeline-placeholder').classList.add('hidden');
+    document.getElementById('sec-day14').classList.remove('hidden');
+    document.getElementById('sec-day14-placeholder').classList.add('hidden');
+    setTimeout(launchStars,400);
+
+  } else {
+    // 14日0時〜
+    box.className='message-box msg-day14';
+    box.innerHTML=`<div class="birthday-title">❤︎ Happy 21st Birthday ❤︎</div><div class="birthday-sub" id="typing-target"></div>`;
+    typeMessage('typing-target','21歳のお誕生日おめでとう🎉\nゆかりちゃんの大切な日をお祝いさせてくれてありがと\nこれからも沢山の思い出作っていこうね');
+    document.getElementById('transit-before').classList.add('hidden');
+    document.getElementById('transit-day13').classList.add('hidden');
+    document.getElementById('transit-full').classList.remove('hidden');
+    document.getElementById('timeline-hidden-before').classList.remove('hidden');
+    document.getElementById('timeline-placeholder').classList.add('hidden');
+    document.getElementById('sec-day14').classList.remove('hidden');
+    document.getElementById('sec-day14-placeholder').classList.add('hidden');
+    document.getElementById('hotel-info-before').classList.add('hidden');
+    document.getElementById('hotel-info-after').classList.remove('hidden');
+    document.getElementById('hotel-stay-card').classList.add('hidden');
+    document.getElementById('day14-detail-before').classList.add('hidden');
+    document.getElementById('day14-detail-after').classList.remove('hidden');
+    setTimeout(launchConfetti,400);
+  }
+
+  // 19時〜：ディナー・電車フル表示
+  if(now>=day13dinner){
+    document.getElementById('transit-before').classList.add('hidden');
+    document.getElementById('transit-day13').classList.add('hidden');
+    document.getElementById('transit-full').classList.remove('hidden');
+    document.getElementById('dinner-before').classList.add('hidden');
+    document.getElementById('dinner-after').classList.remove('hidden');
+    document.getElementById('dinner-timeline-before').classList.add('hidden');
+    document.getElementById('dinner-timeline-after').classList.remove('hidden');
+  }
+
+  // 15時〜：ホテル名表示
+  const day13checkin=new Date('2026-06-13T15:00:00');
+  if(now>=day13checkin){
+    document.getElementById('hotel-info-before').classList.add('hidden');
+    document.getElementById('hotel-info-after').classList.remove('hidden');
+    document.getElementById('hotel-stay-card').classList.add('hidden');
+  }
+}
+
+loadChecks();
+update();
+setInterval(update,30000);
+
+// ===== デモ用 =====
+function showState(state){
+  document.querySelectorAll('.demo-btn').forEach((b,i)=>b.classList.toggle('active',i===state));
+  const box=document.getElementById('message-box');
+  const show=id=>{const e=document.getElementById(id);if(e)e.classList.remove('hidden');};
+  const hide=id=>{const e=document.getElementById(id);if(e)e.classList.add('hidden');};
+  lastTyped='';
+
+  // リセット
+  show('transit-before');hide('transit-day13');hide('transit-full');
+  show('hotel-info-before');hide('hotel-info-after');show('hotel-stay-card');
+  show('dinner-before');hide('dinner-after');
+  hide('timeline-hidden-before');show('timeline-placeholder');
+  hide('sec-day14');show('sec-day14-placeholder');
+  show('dinner-timeline-before');hide('dinner-timeline-after');
+  show('day14-detail-before');hide('day14-detail-after');
+
+  if(state===0){
+    box.className='message-box msg-mosaic';
+    box.innerHTML=`<div class="msg-blur msg-text"><p>今日は待ちに待った21歳誕生日ホカンスDay<br>1泊2日楽しもうね</p></div><div class="mosaic-overlay"><div class="mosaic-label">✦ 13日の0時に変わる予感… ✦</div><div class="mosaic-sub">June 13, 00:00</div></div>`;
+  } else if(state===1){
+    box.className='message-box msg-day13';
+    box.innerHTML=`<div class="msg-text"><p id="typing-target"></p></div><div class="hint-next">✦ 14日の0時にも変わる予感… ✦</div>`;
+    typeMessage('typing-target','今日は待ちに待った\n21歳誕生日ホカンスDay\n1泊2日楽しもうね🎉');
+    hide('transit-before');show('transit-day13');
+    show('timeline-hidden-before');hide('timeline-placeholder');
+    show('sec-day14');hide('sec-day14-placeholder');
+    setTimeout(launchStars,300);
+  } else if(state===2){
+    box.className='message-box msg-day13';
+    box.innerHTML=`<div class="msg-text"><p id="typing-target"></p></div><div class="hint-next">✦ 14日の0時にも変わる予感… ✦</div>`;
+    typeMessage('typing-target','今日は待ちに待った\n21歳誕生日ホカンスDay\n1泊2日楽しもうね🎉');
+    hide('transit-before');show('transit-day13');
+    show('timeline-hidden-before');hide('timeline-placeholder');
+    show('sec-day14');hide('sec-day14-placeholder');
+    // 15時：ホテル名表示
+    hide('hotel-info-before');show('hotel-info-after');hide('hotel-stay-card');
+  } else if(state===3){
+    box.className='message-box msg-day13';
+    box.innerHTML=`<div class="msg-text"><p id="typing-target"></p></div><div class="hint-next">✦ 14日の0時にも変わる予感… ✦</div>`;
+    typeMessage('typing-target','今日は待ちに待った\n21歳誕生日ホカンスDay\n1泊2日楽しもうね🎉');
+    hide('transit-before');hide('transit-day13');show('transit-full');
+    hide('hotel-info-before');show('hotel-info-after');hide('hotel-stay-card');
+    hide('dinner-before');show('dinner-after');
+    show('timeline-hidden-before');hide('timeline-placeholder');
+    show('sec-day14');hide('sec-day14-placeholder');
+    hide('dinner-timeline-before');show('dinner-timeline-after');
+  } else {
+    box.className='message-box msg-day14';
+    box.innerHTML=`<div class="birthday-title">❤︎ Happy 21st Birthday ❤︎</div><div class="birthday-sub" id="typing-target"></div>`;
+    typeMessage('typing-target','21歳のお誕生日おめでとう🎉\nゆかりちゃんの大切な日をお祝いさせてくれてありがと\nこれからも沢山の思い出作っていこうね');
+    hide('transit-before');hide('transit-day13');show('transit-full');
+    hide('hotel-info-before');show('hotel-info-after');hide('hotel-stay-card');
+    hide('dinner-before');show('dinner-after');
+    show('timeline-hidden-before');hide('timeline-placeholder');
+    show('sec-day14');hide('sec-day14-placeholder');
+    hide('dinner-timeline-before');show('dinner-timeline-after');
+    hide('day14-detail-before');show('day14-detail-after');
+    setTimeout(launchConfetti,400);
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+showState(0);
+
+
+</script>
+</body>
+</html>
