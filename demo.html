@@ -88,6 +88,15 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 130px;}
 .demo-label{font-size:10px;letter-spacing:2px;color:var(--light);width:100%;text-align:center;margin-bottom:2px;}
 .demo-btn{font-size:11px;padding:7px 10px;border:1px solid var(--gold);background:transparent;color:var(--gold);cursor:pointer;transition:all 0.2s;border-radius:1px;-webkit-user-select:none;user-select:none;}
 .demo-btn:active,.demo-btn.active{background:var(--gold);color:var(--dark);}
+
+/* ===== 荷造り完了バナー ===== */
+.checklist-wrap{position:relative;}
+.complete-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(245,241,232,0.55);backdrop-filter:blur(1px);-webkit-backdrop-filter:blur(1px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.5s ease;border-radius:1px;}
+.complete-overlay.show{opacity:1;}
+.complete-msg{background:var(--dark);color:var(--gold-light);font-family:var(--font-serif);font-style:italic;padding:18px 28px;border:1px solid var(--gold);border-radius:2px;text-align:center;transform:scale(0.9);transition:transform 0.5s cubic-bezier(0.2,1.4,0.4,1);}
+.complete-overlay.show .complete-msg{transform:scale(1);}
+.complete-title{font-size:20px;color:var(--gold);letter-spacing:2px;margin-bottom:4px;}
+.complete-sub{font-size:12px;color:var(--gold-light);letter-spacing:1px;}
 /* ===== 星キラキラ ===== */
 #star-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;}
 
@@ -199,7 +208,13 @@ footer p{color:var(--gold);margin-top:8px;font-size:18px;}
   <div class="section" id="sec-prep">
     <div class="section-label">Preparation</div>
     <div class="section-title">持ち物チェックリスト</div>
-    <div class="card">
+    <div class="card checklist-wrap">
+      <div class="complete-overlay" id="complete-overlay">
+        <div class="complete-msg">
+          <div class="complete-title">🧳 荷造り完了！</div>
+          <div class="complete-sub">忘れ物なし・準備バッチリ ✨</div>
+        </div>
+      </div>
       <ul class="checklist" id="checklist">
         <li onclick="toggleCheck(this,0)"><div class="check-box"></div><span>13日の服・14日の服</span></li>
         <li onclick="toggleCheck(this,1)"><div class="check-box"></div><span>予備服</span></li>
@@ -234,9 +249,26 @@ footer p{color:var(--gold);margin-top:8px;font-size:18px;}
 <script>
 // ===== チェックリスト（localStorage保存） =====
 function toggleCheck(li, idx) {
-  li.classList.toggle('done');  const checks = JSON.parse(localStorage.getItem('checks') || '{}');
+  li.classList.toggle('done');
+  const checks = JSON.parse(localStorage.getItem('checks') || '{}');
   checks[idx] = li.classList.contains('done');
   localStorage.setItem('checks', JSON.stringify(checks));
+  checkAllDone();
+}
+
+let wasComplete = false;
+function checkAllDone() {
+  const items = document.querySelectorAll('#checklist li');
+  const overlay = document.getElementById('complete-overlay');
+  if (!items.length || !overlay) return;
+  const allDone = [...items].every(li => li.classList.contains('done'));
+  if (allDone) {
+    overlay.classList.add('show');
+    if (!wasComplete) { wasComplete = true; setTimeout(launchConfetti, 200); }
+  } else {
+    overlay.classList.remove('show');
+    wasComplete = false;
+  }
 }
 
 function loadChecks() {
@@ -448,6 +480,7 @@ function update(){
 }
 
 loadChecks();
+checkAllDone();
 update();
 setInterval(update,30000);
 
