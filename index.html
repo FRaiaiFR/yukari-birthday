@@ -33,7 +33,7 @@ header h1 span{color:var(--gold);}
 .divider{display:flex;align-items:center;gap:12px;margin:16px auto;max-width:200px;}
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--gold);opacity:0.5;}
 .divider-diamond{width:6px;height:6px;background:var(--gold);transform:rotate(45deg);}
-main{max-width:680px;margin:0 auto;padding:32px 20px 130px;}
+main{max-width:680px;margin:0 auto;padding:32px 20px 60px;}
 .section{margin-bottom:48px;animation:fadeUp 0.6s ease both;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 .section-label{font-family:var(--font-serif);font-style:italic;font-size:11px;letter-spacing:4px;color:var(--gold);margin-bottom:8px;}
@@ -83,12 +83,6 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 130px;}
 #confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;}
 
 
-/* ===== デモバー ===== */
-.demo-bar{position:fixed;bottom:0;left:0;right:0;background:#1a1410;border-top:1px solid var(--gold);padding:10px 12px;z-index:9998;display:flex;align-items:center;gap:6px;justify-content:center;flex-wrap:wrap;}
-.demo-label{font-size:10px;letter-spacing:2px;color:var(--light);width:100%;text-align:center;margin-bottom:2px;}
-.demo-btn{font-size:11px;padding:7px 10px;border:1px solid var(--gold);background:transparent;color:var(--gold);cursor:pointer;transition:all 0.2s;border-radius:1px;-webkit-user-select:none;user-select:none;}
-.demo-btn:active,.demo-btn.active{background:var(--gold);color:var(--dark);}
-
 /* ===== 荷造り完了バナー ===== */
 .checklist-wrap{position:relative;}
 .complete-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(245,241,232,0.55);backdrop-filter:blur(1px);-webkit-backdrop-filter:blur(1px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.5s ease;border-radius:1px;}
@@ -103,11 +97,17 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 130px;}
 .surprise-trigger:active{background:var(--gold);color:var(--dark);}
 .title-row{display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--gold-light);}
 .title-row .section-title{margin:0;padding:0;border:none;}
+
+/* オーバーレイ全体 */
 #surprise-stage{position:fixed;inset:0;z-index:10000;display:none;background:#1a1510;overflow:hidden;}
 #surprise-stage.active{display:block;}
 #surprise-stage.fade-out{animation:stageFadeOut 1s ease forwards;}
 @keyframes stageFadeOut{to{opacity:0;}}
+
+/* 暗転グラデ背景 */
 .stage-bg{position:absolute;inset:0;background:radial-gradient(ellipse at center,#2a2218 0%,#140f0a 80%);}
+
+/* プレゼントボックス */
 .gift-scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;}
 .gift-glow{position:absolute;top:50%;left:50%;width:340px;height:340px;transform:translate(-50%,-58%);background:radial-gradient(circle,rgba(201,169,110,0.35) 0%,transparent 65%);animation:glowPulse 3s ease-in-out infinite;}
 @keyframes glowPulse{0%,100%{opacity:0.5;transform:translate(-50%,-58%) scale(1);}50%{opacity:0.9;transform:translate(-50%,-58%) scale(1.12);}}
@@ -119,6 +119,9 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 130px;}
 .gift-box.open .gift-lid{transform:translateY(-90px) rotate(-14deg);opacity:0;}
 .gift-tap-hint{font-family:var(--font-serif);font-style:italic;font-size:14px;letter-spacing:3px;color:var(--gold-light);animation:hintPulse 2s ease-in-out infinite;}
 @keyframes hintPulse{0%,100%{opacity:0.4;}50%{opacity:1;}}
+.gift-box.open ~ .gift-tap-hint{opacity:0;transition:opacity 0.3s;}
+
+/* スライドショー */
 .slideshow{position:absolute;inset:0;background:#0a0807;display:none;align-items:center;justify-content:center;touch-action:none;}
 .slideshow.active{display:flex;}
 /* 思い出が浮かび上がるカード */
@@ -136,6 +139,8 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 130px;}
 .slide-counter{position:absolute;bottom:42px;left:50%;transform:translateX(-50%);font-family:var(--font-serif);font-size:14px;letter-spacing:4px;color:rgba(255,255,255,0.8);z-index:5;text-shadow:0 2px 8px rgba(0,0,0,0.8);}
 .slide-caption{position:absolute;bottom:80px;left:50%;transform:translateX(-50%);font-family:var(--font-serif);font-style:italic;font-size:16px;letter-spacing:2px;color:var(--gold-light);z-index:5;text-shadow:0 2px 10px rgba(0,0,0,0.9);opacity:0;transition:opacity 1.4s;text-align:center;width:90%;}
 .slide-caption.show{opacity:1;}
+
+/* スライドショー用クラッカー */
 #surprise-confetti{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:5;}
 /* ===== 星キラキラ ===== */
 #star-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;}
@@ -273,15 +278,6 @@ footer p{color:var(--gold);margin-top:8px;font-size:18px;}
   </div>
 
 </main>
-
-<div class="demo-bar">
-  <div class="demo-label">🔧 DEMO — タップして確認</div>
-  <button class="demo-btn active" id="btn0" onclick="showState(0)">① 初期</button>
-  <button class="demo-btn" id="btn1" onclick="showState(1)">② 13日0時⭐</button>
-  <button class="demo-btn" id="btn2" onclick="showState(2)">③ 15:00</button>
-  <button class="demo-btn" id="btn3" onclick="showState(3)">④ 19:00</button>
-  <button class="demo-btn" id="btn4" onclick="showState(4)">⑤ 14日0時🎉</button>
-</div>
 <footer>
   <div style="font-family:var(--font-serif);font-style:italic;font-size:13px;letter-spacing:2px;color:var(--light);margin-bottom:20px;line-height:2;">Thank you for being you.<br>素敵な2日間になりますように。</div>
   <div class="divider" style="max-width:160px;"><div class="divider-diamond"></div></div>
@@ -537,6 +533,8 @@ const SURPRISE_CAPTIONS = [
 ];
 let surpriseState='idle';
 let slideTimer=null;
+
+// 誕生日（6/14）当日かつ未再生なら自動起動
 function checkBirthdayAuto(){
   const now=new Date();
   const isBirthday=(now.getMonth()===5 && now.getDate()===14);
@@ -546,6 +544,7 @@ function checkBirthdayAuto(){
     setTimeout(startSurprise,800);
   }
 }
+
 function startSurprise(){
   if(surpriseState!=='idle')return;
   surpriseState='box';
@@ -554,6 +553,7 @@ function startSurprise(){
   const ss=document.getElementById('slideshow');
   const box=document.getElementById('gift-box');
   const hint=document.getElementById('gift-hint');
+  // リセット
   stage.classList.remove('fade-out');
   scene.style.display='flex';
   ss.classList.remove('active');
@@ -562,6 +562,7 @@ function startSurprise(){
   stage.classList.add('active');
   document.body.style.overflow='hidden';
 }
+
 function openGift(){
   if(surpriseState!=='box')return;
   surpriseState='opening';
@@ -570,9 +571,12 @@ function openGift(){
   box.classList.add('opening');
   hint.style.opacity='0';
   setTimeout(()=>{box.classList.add('open');},400);
+  // クラッカー
   setTimeout(()=>{launchSurpriseConfetti();},700);
+  // スライドショーへ
   setTimeout(()=>{startSlideshow();},1500);
 }
+
 function startSlideshow(){
   surpriseState='slideshow';
   document.getElementById('gift-scene').style.display='none';
@@ -581,26 +585,27 @@ function startSlideshow(){
   const card=document.getElementById('slide-card');
   const halo=document.getElementById('slide-halo');
   const photo=document.getElementById('slide-photo');
-  const wipe=document.getElementById('slide-darkwipe');
   const counter=document.getElementById('slide-counter');
   const caption=document.getElementById('slide-caption');
   let idx=0;
 
   function showSlide(i){
-    // 1) 黒で覆った状態にリセット
+    // 写真セット
+    photo.src=SURPRISE_PHOTOS[i];
+    counter.textContent=(i+1)+' / '+SURPRISE_PHOTOS.length;
+    // 一旦リセット（黒で覆う）
     card.classList.remove('show');
     halo.classList.remove('show');
     caption.classList.remove('show');
-    wipe.classList.remove('lift');
-    photo.src=SURPRISE_PHOTOS[i];
-    counter.textContent=(i+1)+' / '+SURPRISE_PHOTOS.length;
+    // 光が差し込む（浮かび上がる）
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>{
+        card.classList.add('show');
+        halo.classList.add('show');
+      });
+    });
+    // キャプションは少し遅れて
     caption.textContent=SURPRISE_CAPTIONS[i]||'';
-    // 2) 少し置いてから光が差し込む（黒が薄くなる＋カードが浮かび上がる）
-    setTimeout(()=>{
-      wipe.classList.add('lift');
-      card.classList.add('show');
-      halo.classList.add('show');
-    },350);
     setTimeout(()=>caption.classList.add('show'),1400);
   }
 
@@ -609,15 +614,15 @@ function startSlideshow(){
     card.classList.remove('show');
     halo.classList.remove('show');
     caption.classList.remove('show');
-    wipe.classList.remove('lift'); // 黒を戻す（=暗転）
     setTimeout(cb,1400);
   }
 
   showSlide(0);
+
   function next(){
     idx++;
     if(idx>=SURPRISE_PHOTOS.length){
-      fadeOutCurrent(()=>setTimeout(endSurprise,400));
+      setTimeout(()=>{ fadeOutCurrent(endSurprise); },300);
       return;
     }
     const isLast=(idx===SURPRISE_PHOTOS.length-1);
@@ -644,6 +649,8 @@ function endSurprise(){
     surpriseState='idle';
   },1000);
 }
+
+// サプライズ用クラッカー（専用canvas）
 function launchSurpriseConfetti(){
   const cv=document.getElementById('surprise-confetti');
   const cx=cv.getContext('2d');
@@ -672,87 +679,28 @@ function launchSurpriseConfetti(){
   }
   frame();
 }
+
 checkBirthdayAuto();
 
 setInterval(update,30000);
 
-// ===== デモ用 =====
-function showState(state){
-  document.querySelectorAll('.demo-btn').forEach((b,i)=>b.classList.toggle('active',i===state));
-  const box=document.getElementById('message-box');
-  const show=id=>{const e=document.getElementById(id);if(e)e.classList.remove('hidden');};
-  const hide=id=>{const e=document.getElementById(id);if(e)e.classList.add('hidden');};
-  lastTyped='';
-
-  // リセット
-  show('transit-before');hide('transit-day13');hide('transit-full');
-  show('hotel-info-before');hide('hotel-info-after');show('hotel-stay-card');
-  show('dinner-before');hide('dinner-after');
-  hide('timeline-hidden-before');show('timeline-placeholder');
-  hide('sec-day14');show('sec-day14-placeholder');
-  show('dinner-timeline-before');hide('dinner-timeline-after');
-  show('day14-detail-before');hide('day14-detail-after');
-
-  if(state===0){
-    box.className='message-box msg-mosaic';
-    box.innerHTML=`<div class="msg-blur msg-text"><p>今日は待ちに待った21歳誕生日ホカンスDay<br>1泊2日楽しもうね</p></div><div class="mosaic-overlay"><div class="mosaic-label">✦ 13日の0時に変わる予感… ✦</div><div class="mosaic-sub">June 13, 00:00</div></div>`;
-  } else if(state===1){
-    box.className='message-box msg-day13';
-    box.innerHTML=`<div class="msg-text"><p id="typing-target"></p></div><div class="hint-next">✦ 14日の0時にも変わる予感… ✦</div>`;
-    typeMessage('typing-target','今日は待ちに待った\n21歳誕生日ホカンスDay\n1泊2日楽しもうね🎉');
-    hide('transit-before');show('transit-day13');
-    show('timeline-hidden-before');hide('timeline-placeholder');
-    show('sec-day14');hide('sec-day14-placeholder');
-    setTimeout(launchStars,300);
-  } else if(state===2){
-    box.className='message-box msg-day13';
-    box.innerHTML=`<div class="msg-text"><p id="typing-target"></p></div><div class="hint-next">✦ 14日の0時にも変わる予感… ✦</div>`;
-    typeMessage('typing-target','今日は待ちに待った\n21歳誕生日ホカンスDay\n1泊2日楽しもうね🎉');
-    hide('transit-before');show('transit-day13');
-    show('timeline-hidden-before');hide('timeline-placeholder');
-    show('sec-day14');hide('sec-day14-placeholder');
-    // 15時：ホテル名表示
-    hide('hotel-info-before');show('hotel-info-after');hide('hotel-stay-card');
-  } else if(state===3){
-    box.className='message-box msg-day13';
-    box.innerHTML=`<div class="msg-text"><p id="typing-target"></p></div><div class="hint-next">✦ 14日の0時にも変わる予感… ✦</div>`;
-    typeMessage('typing-target','今日は待ちに待った\n21歳誕生日ホカンスDay\n1泊2日楽しもうね🎉');
-    hide('transit-before');hide('transit-day13');show('transit-full');
-    hide('hotel-info-before');show('hotel-info-after');hide('hotel-stay-card');
-    hide('dinner-before');show('dinner-after');
-    show('timeline-hidden-before');hide('timeline-placeholder');
-    show('sec-day14');hide('sec-day14-placeholder');
-    hide('dinner-timeline-before');show('dinner-timeline-after');
-  } else {
-    box.className='message-box msg-day14';
-    box.innerHTML=`<div class="birthday-title">❤︎ Happy 21st Birthday ❤︎</div><div class="birthday-sub" id="typing-target"></div>`;
-    typeMessage('typing-target','21歳のお誕生日おめでとう🎉\nゆかりちゃんの大切な日をお祝いさせてくれてありがと\nこれからも沢山の思い出作っていこうね');
-    hide('transit-before');hide('transit-day13');show('transit-full');
-    hide('hotel-info-before');show('hotel-info-after');hide('hotel-stay-card');
-    hide('dinner-before');show('dinner-after');
-    show('timeline-hidden-before');hide('timeline-placeholder');
-    show('sec-day14');hide('sec-day14-placeholder');
-    hide('dinner-timeline-before');show('dinner-timeline-after');
-    hide('day14-detail-before');show('day14-detail-after');
-    setTimeout(launchConfetti,400);
-  }
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-showState(0);
-
-
 </script>
 
+<!-- ===== サプライズステージ ===== -->
 <div id="surprise-stage">
   <div class="stage-bg"></div>
+  <!-- プレゼントボックス -->
   <div class="gift-scene" id="gift-scene">
     <div class="gift-glow"></div>
     <div class="gift-box" id="gift-box" onclick="openGift()"><svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 箱本体 -->
   <rect x="30" y="78" width="120" height="80" rx="4" fill="#3a2e1f" stroke="#c9a96e" stroke-width="1.5"/>
   <rect x="82" y="78" width="16" height="80" fill="#c9a96e" opacity="0.85"/>
+  <!-- 蓋 -->
   <g class="gift-lid">
     <rect x="22" y="58" width="136" height="28" rx="4" fill="#46371f" stroke="#c9a96e" stroke-width="1.5"/>
     <rect x="82" y="58" width="16" height="28" fill="#c9a96e" opacity="0.85"/>
+    <!-- リボン結び目 -->
     <path d="M90 58 C70 40 50 44 58 58 C62 64 78 60 90 58Z" fill="#d4b878" stroke="#c9a96e" stroke-width="1"/>
     <path d="M90 58 C110 40 130 44 122 58 C118 64 102 60 90 58Z" fill="#d4b878" stroke="#c9a96e" stroke-width="1"/>
     <circle cx="90" cy="58" r="6" fill="#c9a96e"/>
@@ -760,6 +708,7 @@ showState(0);
 </svg></div>
     <div class="gift-tap-hint" id="gift-hint">tap to open ✦</div>
   </div>
+  <!-- スライドショー -->
   <div class="slideshow" id="slideshow">
     <div class="slide-stage">
       <div class="slide-halo" id="slide-halo"></div>
